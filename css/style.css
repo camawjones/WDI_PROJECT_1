@@ -1,3 +1,43 @@
-body {
-  background-color: blue;
+main {
+  width: 95%;
+  height: 650px;
+  border: 3px solid black;
+  margin: 20px auto;
+  position: relative;
+}
+
+.landing-pad {
+  position: absolute;
+  bottom: 0;
+  left: 350px;
+  width: 150px;
+  height: 50px;
+  border: 3px solid black;
+}
+
+.timer {
+  font-size: 40px;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  line-height: 100px;
+  margin: 0 auto;
+  height: 100px;
+  width: 100px;
+}
+
+
+.lives {
+  float: right;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  line-height: 40px;
+  top: 20px;
+  padding: 5px;
+}
+
+.martins {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black;
 }
