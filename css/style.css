@@ -4,25 +4,31 @@ main {
   border: 3px solid black;
   margin: 20px auto;
   position: relative;
+  overflow: hidden;
 }
 
 .landing-pad {
   position: absolute;
   bottom: 0;
-  left: 350px;
+  left: 0;
   width: 150px;
   height: 50px;
   border: 3px solid black;
+  background-color: black;
+  z-index: 300;
 }
 
+
 .timer {
-  font-size: 40px;
-  font-family: 'Orbitron', sans-serif;
+  font-size: 60px;
+  font-family: Orbitron, sans-serif;
   text-align: center;
   line-height: 100px;
   margin: 0 auto;
   height: 100px;
   width: 100px;
+  color: black;
+  /*text-shadow: -1px 0 #ecdd62, 0 5px #ecdd62, 5px 0 #ecdd62, 0 -5px #ecdd62;*/
 }
 
 
@@ -38,12 +44,15 @@ main {
 
 .score {
   float: left;
-  width: 100px;
+  width: 300px;
   height: 40px;
   margin: 0 auto;
   line-height: 40px;
   top: 20px;
   padding: 5px;
+  font-family: 'Death Star';
+  font-size: 30px;
+  color: #ecdd62
 }
 
 .box {
@@ -61,6 +70,10 @@ main {
 
 .martians {
   background: green;
+}
+
+.martianclones {
+  width: 80px;
 }
 
 
