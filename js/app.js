@@ -2,12 +2,14 @@ const baseBoxWidth = 50;
 let duration = 3000;
 
 $(() => {
+
   const $landingpad = $('.landing-pad');
   const $main = $('main');
   let score = 0;
   const $scoreDisp = $('.scoreDisp');
   const width = $('main').width();
   const interval = 1000;
+
 
   //TIMER BELOW
   let count=4;
@@ -60,41 +62,46 @@ $(() => {
   });
 
   const counter=setInterval(timer, 1000);
-  function timer() {
-    count=count-1;
-    if (count === 0){
-      clearInterval(counter);
-      $timer.text('');
-      // createBox();
-      setInterval(createBox, interval);
 
-      return;
+$('.play').click(
+    function timer() {
+      count=count-1;
+      if (count === 0){
+        clearInterval(counter);
+        $timer.text('');
+        setInterval(createBox, interval);
+        return;
+      }
+      $timer.text(count);
     }
-    $timer.text(count);
-  }
-
+  );
   function speedUp(t) {
     setTimeout(function(){
-      changeWidth($landingpad, 0.85);
-      duration -= duration * 0.2;
-
+      duration -= duration * 0.1;
     }, t);
   }
 
-  speedUp(10000);
-  speedUp(40000);
+  speedUp(30000);
   speedUp(60000);
   speedUp(90000);
+  speedUp(120000);
 
+$()
   function createBox() {
-    // create dom div
     const $box = $('<div class="box"></div>');
     $box.css('left', chooseRandomPosition($main));
-    Math.random() > 0.96 ? $box.addClass('martians') : $box.addClass('martins');
+    if (Math.random() > 0.96) {
+      $box.addClass('life');
+    } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
+      $box.addClass('widthwide');
+    } else {
+      $box.addClass('martins');
+    }
 
     $('.game-page').append($box);
     animateBox($box);
   }
+
 
   function animateBox($box) {
     $box.animate({'top': '653px'}, {
@@ -120,7 +127,17 @@ $(() => {
           score += 1000;
           $scoreDisp.text(score);
 
-        } else if(boxDimensions && $box.hasClass('martians')){
+        } else if(boxDimensions && $box.hasClass('life')){
+
+          $($box).stop().fadeOut();
+          setTimeout(() => {
+            $($box).remove();
+          }, 500);
+
+          if ($('li').length < 4) {
+            $('.mylist').append('<li class="lives"><i class="fa fa-heart" aria-hidden="true"></i></li>');
+          }
+        } else if(boxDimensions && $box.hasClass('widthwide')) {
 
           $($box).stop().fadeOut();
           setTimeout(() => {
@@ -128,7 +145,11 @@ $(() => {
           }, 500);
           score += 1000;
           $scoreDisp.text(score);
-          $('.mylist').append('<li class="lives"><i class="fa fa-heart" aria-hidden="true"></i></li>');
+          changeWidthWide($landingpad, 200);
+          setTimeout(function (){
+            changeWidthWide($landingpad, 150);
+          }, 13000);
+
 
         } else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
           $('li:last-child').remove();
@@ -142,6 +163,7 @@ $(() => {
   }
 });
 
+
 function checkForLeftEdge($element) {
   return parseInt($element.css('left')) < 0;
 }
@@ -154,13 +176,21 @@ function chooseRandomPosition($element) {
   return Math.floor(Math.random() * ($element.width() - baseBoxWidth)) + 1;
 }
 
-function changeWidth($element, xChange) {
-  const width = $element.width();
-  $element.animate({'width': width * xChange}, {
-    duration: '500',
+function changeWidthWide($element, pxChange) {
+  // const width = $element.width();
+  $element.animate({'width': pxChange + 'px'}, {
+    duration: '200',
     easing: 'linear'
   });
 }
+
+// function newLevel(){
+//   $('.level').hide();
+//   setTimeout(function(){
+//
+//   })
+
+
 
 
 // function () {

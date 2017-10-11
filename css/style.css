@@ -68,14 +68,37 @@ main {
   background: blue;
 }
 
-.martians {
+.life {
   background: green;
+}
+
+.widthwide {
+  background: red;
 }
 
 .martianclones {
   width: 80px;
 }
 
+.level {
+  font-size: 60px;
+  font-family: Orbitron, sans-serif;
+  text-align: center;
+  line-height: 100px;
+  margin: 0 auto;
+  height: 100px;
+  width: 100px;
+  color: black;
+}
+
+.play {
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  top: 300px;
+  font-size: 60px;
+  font-family: Orbitron, sans-serif;
+}
 
 /*.Martins {
   top:0px;
