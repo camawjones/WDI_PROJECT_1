@@ -76,20 +76,25 @@ $(() => {
 
   function speedUp(t) {
     setTimeout(function(){
+      const width = $landingpad.width();
+      $landingpad.animate({'width': width * 0.85}, {
+        duration: '500',
+        easing: 'linear'
+      });
       duration -= duration * 0.2;
     }, t);
   }
 
-  speedUp(15000);
-  speedUp(30000);
-  speedUp(45000);
+  speedUp(20000);
+  speedUp(40000);
   speedUp(60000);
+  speedUp(90000);
 
   function createBox() {
     // create dom div
     const $box = $('<div class="box"></div>');
     $box.css('left', Math.floor(Math.random() * ($main.width() - 50)) + 1);
-    Math.random() > 0.66 ? $box.addClass('martians') : $box.addClass('martins');
+    Math.random() > 0.96 ? $box.addClass('martians') : $box.addClass('martins');
 
     $('.game-page').append($box);
     animateBox($box);
@@ -106,6 +111,7 @@ $(() => {
         const b1 = $box.width();
         const b2 = $landingpad.width();
         x1.bottom = x1.top + a1;
+        x2.bottom = 0;
         const boxDimensions = x2.top<(x1.top + a1) && x2.top && x1.left>(x2.left-b1) &&x1.left<(x2.left+b2);
 
         if(boxDimensions && $box.hasClass('martins')){
@@ -120,6 +126,10 @@ $(() => {
           setTimeout(() => {
             $($box).remove();
           }, 500);
+          score += 1000;
+          $scoreDisp.text(score);
+          $('.mylist').append('<li class="lives"><i class="fa fa-heart" aria-hidden="true"></i></li>');
+        }else if($box.hasClass('martins') && x1.bottom < x1.bottom){
           $('.mylist li:last-child').remove();
         }
       },
