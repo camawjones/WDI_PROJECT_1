@@ -9,11 +9,6 @@ let count = 4;
 let $scoreDisp;
 let width;
 let $main;
-let $mylist;
-let $footer;
-let $play;
-let $score;
-let $replay;
 const speeds = [
   30000,
   60000,
@@ -23,7 +18,7 @@ const speeds = [
 ];
 
 let pressed = false;
-const gameContainerWidth = null;
+let gameContainerWidth = null;
 let $landingpad = null;
 let $timer = null;
 let countdownInterval = null;
@@ -37,32 +32,27 @@ function setup() {
   $scoreDisp = $('.scoreDisp');
   $main = $('main');
   $gameover = $('.gameover');
-  $mylist = $('.mylist');
-  $score = $('.score');
-  $play = $('.play');
-  $replay = $('.replay');
-
 
   width = $main.width();
-  $main.width();
-  $landingpad.hide();
-  $mylist.hide();
-  $gameover.hide();
+  gameContainerWidth = $('main').width();
   $('.score').hide();
+  $('.landing-pad').hide();
+  $('.mylist').hide();
+
+  $gameover.hide();
+
 
   setSpeeds();
-  $play.on('click', startGame);
-  $replay.on('click', startGame);
+  $('.play').on('click', startGame);
+  $('.replay').on('click', startGame);
 }
 
 function startGame() {
   // HERE
-  clearInterval(createBox);
-  $footer = $('.footer');
-  $footer.hide();
-  $mylist.show();
-  $landingpad.show();
-  $score.show();
+  $('footer').hide();
+  $('.mylist').show();
+  $('.landing-pad').show();
+  $('.score').show();
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
@@ -80,17 +70,21 @@ function timer() {
 }
 
 function createBox(){
-  const $box = $('<div class="box"></div>');
-  $box.css('left', chooseRandomPosition(gameContainerWidth));
-  if (Math.random() > 0.96) {
-    $box.addClass('life');
-  } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
-    $box.addClass('widthwide');
-  } else {
-    $box.addClass('martins');
+  if($('li').length > 0) {
+    const $box = $('<div class="box"></div>');
+    $box.css('left', chooseRandomPosition(gameContainerWidth));
+    if (Math.random() > 0.96) {
+      $box.addClass('life');
+    } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
+      $box.addClass('widthwide');
+    } else {
+      $box.addClass('martins');
+    }
+    $('.game-page').append($box);
+    animateBox($box);
+  } else{
+    return;
   }
-  $('.game-page').append($box);
-  animateBox($box);
 }
 
 function animateBox($box) {
@@ -137,7 +131,9 @@ function animateBox($box) {
         // Taking a life
         $('li:last-child').remove();
         if ($('li').length === 0) {
-          $gameover.show();
+          $('.gameover').show();
+          animateBox.stop();
+          clearInterval(countdownInterval);
         }
         $box.remove();
       }
