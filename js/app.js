@@ -1,5 +1,4 @@
-// let speedUpBox;
-
+const baseBoxWidth = 50;
 let duration = 3000;
 
 $(() => {
@@ -25,7 +24,7 @@ $(() => {
             }, {
               duration: 1500,
               step: function() {
-                if (parseInt($landingpad.css('left')) < 0 ) {
+                if (checkForLeftEdge($landingpad)) {
                   $(document).trigger('keyup');
                 }
               }
@@ -38,7 +37,7 @@ $(() => {
             }, {
               duration: 1500,
               step: function() {
-                if (parseInt($landingpad.css('left')) > width - $landingpad.width()) {
+                if (checkForRightEdge($landingpad, $main)) {
                   $(document).trigger('keyup');
                 }
               }
@@ -51,11 +50,11 @@ $(() => {
     $landingpad.stop();
     pressed = false;
 
-    if (parseInt($landingpad.css('left')) < 0) {
+    if (checkForLeftEdge($landingpad)) {
       $landingpad.css('left', '0').stop();
     }
 
-    if (parseInt($landingpad.css('left')) > width - $landingpad.width()) {
+    if (checkForRightEdge($landingpad, $main)) {
       $landingpad.css('left', `${width - $landingpad.width()}px`).stop();
     }
   });
@@ -76,16 +75,13 @@ $(() => {
 
   function speedUp(t) {
     setTimeout(function(){
-      const width = $landingpad.width();
-      $landingpad.animate({'width': width * 0.85}, {
-        duration: '500',
-        easing: 'linear'
-      });
+      changeWidth($landingpad, 0.85);
       duration -= duration * 0.2;
+
     }, t);
   }
 
-  speedUp(20000);
+  speedUp(10000);
   speedUp(40000);
   speedUp(60000);
   speedUp(90000);
@@ -93,7 +89,7 @@ $(() => {
   function createBox() {
     // create dom div
     const $box = $('<div class="box"></div>');
-    $box.css('left', Math.floor(Math.random() * ($main.width() - 50)) + 1);
+    $box.css('left', chooseRandomPosition($main));
     Math.random() > 0.96 ? $box.addClass('martians') : $box.addClass('martins');
 
     $('.game-page').append($box);
@@ -109,19 +105,23 @@ $(() => {
         const x2 = $landingpad.position();
         const a1 = $box.height();
         const b1 = $box.width();
+        const a2 = $landingpad.height();
         const b2 = $landingpad.width();
         x1.bottom = x1.top + a1;
-        x2.bottom = 0;
+        x2.bottom = x2.top + a2;
         const boxDimensions = x2.top<(x1.top + a1) && x2.top && x1.left>(x2.left-b1) &&x1.left<(x2.left+b2);
 
         if(boxDimensions && $box.hasClass('martins')){
+
           $($box).stop().fadeOut();
           setTimeout(() => {
             $($box).remove();
           }, 500);
           score += 1000;
           $scoreDisp.text(score);
+
         } else if(boxDimensions && $box.hasClass('martians')){
+
           $($box).stop().fadeOut();
           setTimeout(() => {
             $($box).remove();
@@ -129,8 +129,10 @@ $(() => {
           score += 1000;
           $scoreDisp.text(score);
           $('.mylist').append('<li class="lives"><i class="fa fa-heart" aria-hidden="true"></i></li>');
-        }else if($box.hasClass('martins') && x1.bottom < x1.bottom){
-          $('.mylist li:last-child').remove();
+
+        } else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
+          $('li:last-child').remove();
+          $box.remove();
         }
       },
       complete: function() {
@@ -139,3 +141,30 @@ $(() => {
     });
   }
 });
+
+function checkForLeftEdge($element) {
+  return parseInt($element.css('left')) < 0;
+}
+
+function checkForRightEdge($element, main) {
+  return parseInt($element.css('left')) > main.width() - $element.width();
+}
+
+function chooseRandomPosition($element) {
+  return Math.floor(Math.random() * ($element.width() - baseBoxWidth)) + 1;
+}
+
+function changeWidth($element, xChange) {
+  const width = $element.width();
+  $element.animate({'width': width * xChange}, {
+    duration: '500',
+    easing: 'linear'
+  });
+}
+
+
+// function () {
+//   if (parseInt($landingpad.css('left')) < 0 ) {
+//     $(document).trigger('keyup');
+//   }
+// }
