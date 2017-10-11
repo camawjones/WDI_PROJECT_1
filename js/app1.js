@@ -1,86 +1,223 @@
-$(() => {
+$(setup);
 
-  // ONE BLOCK
-  //
-  // Pick a place to create the block from
-  // Create it and chose type
-  // Make it fall
-  // Use the step function to check if a collision happens with panel
-  // Or check if it hits the bottom
-  // When the collision happens, destroy.
-
-
-
-const $landingpad = $('.landing-pad');
-const $gamepage = $('.game-page');
-const $main = $('main');
-
-//TIMER BELOW
+const baseBoxWidth = 50;
+let duration = 3000;
+// const $main = $('main');
+let score = 0;
+const interval = 1000;
 let count = 4;
-let $timer = $('.timer');
+let $scoreDisp;
+let width;
+let $main;
+let $mylist;
+let $footer;
+let $play;
+let $score;
+let $replay;
+const speeds = [
+  30000,
+  60000,
+  90000,
+  120000,
+  180000
+];
 
-const counter = setInterval(timer, 1000);
+let pressed = false;
+const gameContainerWidth = null;
+let $landingpad = null;
+let $timer = null;
+let countdownInterval = null;
+// let $replay            = null;
+let $gameover = null;
+// let $lis                = null;
+
+function setup() {
+  $timer = $('.timer');
+  $landingpad = $('.landing-pad');
+  $scoreDisp = $('.scoreDisp');
+  $main = $('main');
+  $gameover = $('.gameover');
+  $mylist = $('.mylist');
+  $score = $('.score');
+  $play = $('.play');
+  $replay = $('.replay');
+
+
+  width = $main.width();
+  $main.width();
+  $landingpad.hide();
+  $mylist.hide();
+  $gameover.hide();
+  $('.score').hide();
+
+  setSpeeds();
+  $play.on('click', startGame);
+  $replay.on('click', startGame);
+}
+
+function startGame() {
+  // HERE
+  clearInterval(createBox);
+  $footer = $('.footer');
+  $footer.hide();
+  $mylist.show();
+  $landingpad.show();
+  $score.show();
+  $(document).keydown(handleKeyDown);
+  $(document).keyup(handleKeyUp);
+  countdownInterval = setInterval(timer, 1000);
+}
+
 function timer() {
-  count=count-1;
+  count = count-1;
   if (count === 0){
-    clearInterval(counter);
+    clearInterval(countdownInterval);
     $timer.text('');
-    //counter ended, do something here
+    setInterval(createBox, interval);
     return;
   }
   $timer.text(count);
 }
 
-
-
-function fallingObj() {
-
-    var $placeFallers = function () {
-      let divPickerNum = Math.floor(Math.random() * 2);
-      if (divPickerNum === 1) {
-        $('main').append('<div class="Martians fallers"></div>');
-      } else {
-        $('main').append('<div class="Martins fallers"></div>');
-      }
-      const $fallers = $('main').append('<div class="Martians fallers"></div>') || $('main').append('<div class="Martins fallers"></div>');
-
-      $fallers.css({
-        'left': (Math.random() * $('main').width()) + 'px',
-        'top': '-50px'
-      });
-      // $Martins = $Martins.add($Martin);
-      $('main').prepend($fallers);
-    };
-
-    runFallers = function() {
-      $Martins.each(function() {
-
-        var singleAnimation = function($Marty) {
-          $Marty.animate({
-            top: $('main').height()
-          }, 3000, 'linear', function(){
-          // this particular snow flake has finished, restart again
-            $Marty.css({
-              'top': (- Math.random() * $('main').height()) + 'px',
-              'left': (Math.random() * $('main').width()) + 'px'
-
-
-            });
-            singleAnimation($Marty);
-          });
-        };
-        singleAnimation($(this));
-      });
-    };
-
-  createMartins();
-  runMartinStorm();
+function createBox(){
+  const $box = $('<div class="box"></div>');
+  $box.css('left', chooseRandomPosition(gameContainerWidth));
+  if (Math.random() > 0.96) {
+    $box.addClass('life');
+  } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
+    $box.addClass('widthwide');
+  } else {
+    $box.addClass('martins');
+  }
+  $('.game-page').append($box);
+  animateBox($box);
 }
 
+function animateBox($box) {
+  $box.animate({'top': '653px'}, {
+    duration: duration,
+    easing: 'linear',
+    step: function collision() {
+      const x1 = $box.position();
+      const x2 = $landingpad.position();
+      const a1 = $box.height();
+      const b1 = $box.width();
+      const a2 = $landingpad.height();
+      const b2 = $landingpad.width();
+      x1.bottom = x1.top + a1;
+      x2.bottom = x2.top + a2;
+      const boxDimensions = x2.top<(x1.top + a1) && x2.top && x1.left>(x2.left-b1) &&x1.left<(x2.left+b2);
 
+      // When a collision happens
+      if (boxDimensions && $box.hasClass('martins')){
+        checkForCollision($box, 1000);
 
-    $placeFallers();
+      // ?
+      } else if(boxDimensions && $box.hasClass('life')){
+        checkForCollision($box, 2000);
 
+        $($box).stop().fadeOut();
+        // Adding a life
+        if ($('li').length < 4) {
+          $('.mylist').append('<li class="lives"><i class="fa fa-heart"></i></li>');
+        }
+
+      // ?
+      } else if(boxDimensions && $box.hasClass('widthwide')) {
+        checkForCollision($box, 2000);
+
+        // Increase landing pad
+        changeWidthWide($landingpad, 1.2);
+        setTimeout(function (){
+          changeWidthWide($landingpad,10/12 );
+        }, 15000);
+
+      } else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
+
+        // Taking a life
+        $('li:last-child').remove();
+        if ($('li').length === 0) {
+          $gameover.show();
+        }
+        $box.remove();
+      }
+    },
+    complete: function() {
+      $box.remove();
+    }
+  });
+}
+
+function setSpeeds() {
+  speeds.forEach(t => {
+    setTimeout(function(){
+      duration -= duration * 0.20;
+    }, t);
+  });
+}
+
+function handleKeyDown(e) {
+  if(!pressed){
+    switch (e.which) {
+      case 37:
+        animatePaddle('-', checkForLeftEdge);
+        break;
+      case 39:
+        animatePaddle('+', checkForRightEdge);
+        break;
+    }
   }
+  pressed = true;
+}
 
-});
+function animatePaddle(operation, callback) {
+  $landingpad.stop().animate(
+    {
+      left: `${operation}=` + gameContainerWidth
+    }, {
+      duration: 1500,
+      step: function() {
+        if (callback($landingpad)) {
+          $(document).trigger('keyup');
+        }
+      }
+    });
+}
+
+function checkForCollision($element, n){
+  $element.stop().fadeOut();
+  setTimeout(() => {
+    $element.remove();
+  }, 500);
+  score += n;
+  $scoreDisp.text(score);
+}
+
+function handleKeyUp() {
+  $landingpad.stop();
+
+  pressed = false;
+
+  if (checkForLeftEdge($landingpad)) $landingpad.css('left', '0').stop();
+  if (checkForRightEdge($landingpad)) $landingpad.css('left', `${width - $landingpad.width()}px`).stop();
+}
+
+function checkForLeftEdge($element) {
+  return parseInt($element.css('left')) < 0;
+}
+
+function checkForRightEdge($element) {
+  return parseInt($element.css('left')) > gameContainerWidth - $element.width();
+}
+
+function chooseRandomPosition($element) {
+  return Math.floor(Math.random() * ($element - baseBoxWidth)) + 1;
+}
+
+function changeWidthWide($element, xChange) {
+  // const width = $element.width();
+  $element.animate({'width': $element.width() * xChange}, {
+    duration: '200',
+    easing: 'linear'
+  });
+}

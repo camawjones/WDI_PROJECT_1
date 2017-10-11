@@ -63,18 +63,18 @@ $(() => {
 
   const counter=setInterval(timer, 1000);
 
-$('.play').click(
-    function timer() {
-      count=count-1;
-      if (count === 0){
-        clearInterval(counter);
-        $timer.text('');
-        setInterval(createBox, interval);
-        return;
-      }
-      $timer.text(count);
+  $('.play').click(timer);
+
+  function timer() {
+    count=count-1;
+    if (count === 0){
+      clearInterval(counter);
+      $timer.text('');
+      setInterval(createBox, interval);
+      return;
     }
-  );
+    $timer.text(count);
+  }
   function speedUp(t) {
     setTimeout(function(){
       duration -= duration * 0.1;
@@ -90,14 +90,12 @@ $()
   function createBox() {
     const $box = $('<div class="box"></div>');
     $box.css('left', chooseRandomPosition($main));
-    if (Math.random() > 0.96) {
-      $box.addClass('life');
+    if (Math.random() > 0.96) {$box.addClass('life');
     } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
       $box.addClass('widthwide');
     } else {
       $box.addClass('martins');
     }
-
     $('.game-page').append($box);
     animateBox($box);
   }
