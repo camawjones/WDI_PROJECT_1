@@ -1,5 +1,7 @@
 $(setup);
 
+
+
 const baseBoxWidth = 50;
 let duration = 3000;
 // const $main = $('main');
@@ -7,8 +9,13 @@ let score = 0;
 const interval = 1000;
 let count = 4;
 let $scoreDisp;
+let $score;
 let width;
 let $main;
+let $mylist;
+let $play;
+let $replay;
+let myCopy;
 const speeds = [
   30000,
   60000,
@@ -32,19 +39,24 @@ function setup() {
   $scoreDisp = $('.scoreDisp');
   $main = $('main');
   $gameover = $('.gameover');
+  $score = $('.score');
+  $mylist = $('.mylist');
+  gameContainerWidth = $('main').width();
+  myCopy = $mylist.clone(true);
 
   width = $main.width();
-  gameContainerWidth = $('main').width();
-  $('.score').hide();
-  $('.landing-pad').hide();
-  $('.mylist').hide();
+  $score.hide();
+  $landingpad.hide();
+  $mylist.hide();
 
   $gameover.hide();
 
 
   setSpeeds();
-  $('.play').on('click', startGame);
-  $('.replay').on('click', startGame);
+  $play = $('.play');
+  $replay = $('.replay');
+  $play.on('click', startGame);
+  $replay.on('click', restart);
 }
 
 function startGame() {
@@ -53,9 +65,26 @@ function startGame() {
   $('.mylist').show();
   $('.landing-pad').show();
   $('.score').show();
+  $('.banner').hide();
+  $('.logo').hide();
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
+  setSpeeds();
+}
+
+function restart(){
+  // $(document).keydown(handleKeyDown);
+  // $(document).keyup(handleKeyUp);
+  $scoreDisp.text('');
+  count = 4;
+  countdownInterval = setInterval(timer, 1000);
+  $gameover.hide();
+  for (var i = 0; i < 3; i++) {
+    $('.mylist').append('<li class="lives"><i class="fa fa-heart"></i></li>');
+  }
+  setSpeeds();
+
 }
 
 function timer() {
@@ -132,7 +161,7 @@ function animateBox($box) {
         $('li:last-child').remove();
         if ($('li').length === 0) {
           $('.gameover').show();
-          animateBox.stop();
+          $('.finalscore').text($scoreDisp.text());
           clearInterval(countdownInterval);
         }
         $box.remove();
