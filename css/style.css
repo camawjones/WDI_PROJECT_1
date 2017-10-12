@@ -142,8 +142,8 @@ li {
   top: 0;
   left: 0;
   z-index:200;
-  width: 50px;
-  height: 50px;
+  /*width: 50px;
+  height: 50px;*/
 }
 
 .play, .instructions {
@@ -161,7 +161,14 @@ li {
 
 
 .martins {
-  background: blue;
+  background-image: url('../assets/princess-clunes.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 150px;
+  height: 100px;
+  /*background: blue;
+  /*background-image: url('../assets/princess-clunes.png');*/
 }
 
 .life {
@@ -178,7 +185,7 @@ li {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100px;
+  width: 150px;
   height: 150px;
 }
 
