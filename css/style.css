@@ -13,22 +13,39 @@ overflow: hidden;
 main {
   width: 95%;
   height: 650px;
-  border: 3px solid black;
   margin: 20px auto;
   position: relative;
   overflow: hidden;
   /*background-image: url('assets/star-background.jpg');*/
 }
 
+footer {
+  margin: 10px auto;
+  width: 600px;
+  font-size: 15px;
+  text-align: center;
+  line-height: 100px;
+  margin-top: px;
+  font-family: 'Death Star', sans-serif;
+  height: 100px;
+  animation-name: example;
+  animation-duration: 4s;
+}
+
 .logo {
   width: 60%;
   margin: 30px auto;
+
 }
 
 .logoimage {
   width: 100%;
   margin: 0 auto;
+  animation: logo-bounce 2.5s infinite;
+
 }
+
+
 
 .banner {
   margin: 0 auto;
@@ -59,10 +76,11 @@ main {
   font-family: 'Death Star', sans-serif;
   text-align: center;
   line-height: 100px;
-  margin: 0 auto;
+  margin: 200px auto;
   height: 100px;
   width: 100px;
   color: #ecdd62;
+  -webkit-animation: font-grow 0.5s ease-in-out infinite alternate;
   /*text-shadow: -1px 0 #ecdd62, 0 5px #ecdd62, 5px 0 #ecdd62, 0 -5px #ecdd62;*/
 }
 
@@ -75,9 +93,15 @@ li {
   height: 300px;
   text-align: center;
   font-size: 50px;
-  margin: 0 auto;
+  margin: 200px auto;
   color: white;
-  font-family: 'Death Star';
+  font-family: 'star jedi hollow';
+  color: #ecdd62;
+  z-index: 500;
+}
+
+.gamefont {
+  font-family: 'Death Star', sans-serif;
 }
 
 
@@ -89,6 +113,15 @@ li {
   line-height: 40px;
   top: 20px;
   padding: 5px;
+  background-image: url('../assets/clunelife.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.clunelayer {
+  width: 30px;
+  padding: 10px;
 }
 
 .score {
@@ -101,7 +134,7 @@ li {
   padding: 5px;
   font-family: 'Death Star';
   font-size: 30px;
-  color: #ecdd62
+  color: #ecdd62;
 }
 
 .box {
@@ -113,16 +146,40 @@ li {
   height: 50px;
 }
 
+.play, .instructions {
+  text-decoration: none;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.play:hover, .instructions:hover {
+  -webkit-animation: neon3 1.5s ease-in-out infinite alternate;
+  -moz-animation: neon3 1.5s ease-in-out infinite alternate;
+  animation: neon3 1.5s ease-in-out infinite alternate;
+}
+
+
 .martins {
   background: blue;
 }
 
 .life {
-  background: green;
+  background-image: url('../assets/yodaclune.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 150px;
+  height: 100px;
 }
 
 .widthwide {
-  background: red;
+  background-image: url('../assets/martinskywalker.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px;
+  height: 150px;
 }
 
 .martianclones {
@@ -140,30 +197,17 @@ li {
   color: black;
 }
 
-footer {
-  margin: 0 auto;
-  width: 700px;
-  font-size: 15px;
-  text-align: center;
-  line-height: 100px;
-  margin-top: px;
-  font-family: 'Death Star', sans-serif;
-  height: 100px;
-}
-
 .play {
   height: 100px;
   width: 300px;
-  margin: auto;
+  margin: 0 auto;
   top: 300px;
   font-size: 40px;
-  font-family: 'Death Star', sans-serif;
-  float: left;
-  padding-right: 30px;
+  font-family: 'Death Star', sans-serif;;
   color: #ecdd62;
 }
 
-.instructions {
+/*.instructions {
   height: 100px;
   width: 300px;
   margin: auto;
@@ -173,6 +217,35 @@ footer {
   float: right;
   padding-left: 30px;
   color: #ecdd62;
+ }*/
+
+ @-webkit-keyframes neon3 {
+   from {
+     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ecdd62, 0 0 35px #ecdd62, 0 0 40px #ecdd62, 0 0 50px #ecdd62, 0 0 75px #ecdd62;
+   }
+   to {
+     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ecdd62, 0 0 70px #ecdd62, 0 0 80px #ecdd62, 0 0 100px #ecdd62;
+   }
+ }
+
+ @-webkit-keyframes font-grow {
+   from {
+     font-size: 60px;
+   }
+   to {
+     font-size: 120px;
+   }
+ }
+
+
+ @keyframes logo-bounce {
+
+ 0% {transform: translateY(2%);}
+
+ 50% {transform: translateY(20%);}
+
+ 100% {transform: translateY(2%);}
+
  }
 
 /*.Martins {

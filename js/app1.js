@@ -15,7 +15,8 @@ let $main;
 let $mylist;
 let $play;
 let $replay;
-let myCopy;
+let startAnimation;
+let $starwars;
 const speeds = [
   30000,
   60000,
@@ -23,6 +24,11 @@ const speeds = [
   120000,
   180000
 ];
+let timeOutOne;
+let timeOutTwo;
+let timeOutThree;
+let timeOutFour;
+let timeOutFive;
 
 let pressed = false;
 let gameContainerWidth = null;
@@ -41,18 +47,20 @@ function setup() {
   $gameover = $('.gameover');
   $score = $('.score');
   $mylist = $('.mylist');
+  // $starwars = $('.starwars');
   gameContainerWidth = $('main').width();
-  myCopy = $mylist.clone(true);
+  // myCopy = $mylist.clone(true);
 
   width = $main.width();
   $score.hide();
   $landingpad.hide();
   $mylist.hide();
+  // $starwars.hide();
 
   $gameover.hide();
 
 
-  setSpeeds();
+  // setSpeeds();
   $play = $('.play');
   $replay = $('.replay');
   $play.on('click', startGame);
@@ -62,6 +70,9 @@ function setup() {
 function startGame() {
   // HERE
   $('footer').hide();
+  setTimeout(() => {
+    $('footer').remove();
+  }, 500);
   $('.mylist').show();
   $('.landing-pad').show();
   $('.score').show();
@@ -70,32 +81,36 @@ function startGame() {
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
-  setSpeeds();
+  // setSpeeds();
 }
 
 function restart(){
   // $(document).keydown(handleKeyDown);
   // $(document).keyup(handleKeyUp);
+  $gameover.hide();
   $scoreDisp.text('');
   count = 4;
-  countdownInterval = setInterval(timer, 1000);
-  $gameover.hide();
+  score = 0;
+  duration = 3000;
   for (var i = 0; i < 3; i++) {
-    $('.mylist').append('<li class="lives"><i class="fa fa-heart"></i></li>');
+    $('.mylist').append('<li class="lives"></li>');
   }
-  setSpeeds();
-
+  $('.box').remove();
+  countdownInterval = setInterval(timer, 1000);
 }
 
 function timer() {
   count = count-1;
   if (count === 0){
+    console.log('fired');
     clearInterval(countdownInterval);
     $timer.text('');
-    setInterval(createBox, interval);
+    setSpeeds();
+    startAnimation = setInterval(createBox, interval);
     return;
   }
   $timer.text(count);
+  console.log(count);
 }
 
 function createBox(){
@@ -142,7 +157,7 @@ function animateBox($box) {
         $($box).stop().fadeOut();
         // Adding a life
         if ($('li').length < 4) {
-          $('.mylist').append('<li class="lives"><i class="fa fa-heart"></i></li>');
+          $('.mylist').append('<li class="lives"></li>');
         }
 
       // ?
@@ -152,7 +167,7 @@ function animateBox($box) {
         // Increase landing pad
         changeWidthWide($landingpad, 1.2);
         setTimeout(function (){
-          changeWidthWide($landingpad,10/12 );
+          changeWidthWide($landingpad,1 );
         }, 15000);
 
       } else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
@@ -160,9 +175,18 @@ function animateBox($box) {
         // Taking a life
         $('li:last-child').remove();
         if ($('li').length === 0) {
-          $('.gameover').show();
           $('.finalscore').text($scoreDisp.text());
-          clearInterval(countdownInterval);
+          // $starwars.show();
+          $('.gameover').show();
+
+          clearTimeout(timeOutOne);
+          clearTimeout(timeOutTwo);
+          clearTimeout(timeOutThree);
+          clearTimeout(timeOutFour);
+          clearTimeout(timeOutFive);
+          clearInterval(startAnimation);
+
+          $('.box').stop();
         }
         $box.remove();
       }
@@ -174,11 +198,20 @@ function animateBox($box) {
 }
 
 function setSpeeds() {
-  speeds.forEach(t => {
-    setTimeout(function(){
-      duration -= duration * 0.20;
-    }, t);
-  });
+  timeOutOne = setTimeout(functionSame, speeds[0]);
+  timeOutTwo = setTimeout(functionSame, speeds[1]);
+  timeOutThree = setTimeout(functionSame, speeds[2]);
+  timeOutFour = setTimeout(functionSame, speeds[3]);
+  timeOutFive = setTimeout(functionSame, speeds[4]);
+
+  function functionSame() {
+    duration -= duration * 0.20;
+  }
+  // speeds.forEach(t => {
+  //   const newTimeout = setTimeout(function(){
+  //     duration -= duration * 0.20;
+  //   }, t);
+  // });
 }
 
 function handleKeyDown(e) {
@@ -241,7 +274,7 @@ function chooseRandomPosition($element) {
 
 function changeWidthWide($element, xChange) {
   // const width = $element.width();
-  $element.animate({'width': $element.width() * xChange}, {
+  $element.animate({'width': (150 * xChange) + 'px'}, {
     duration: '200',
     easing: 'linear'
   });
