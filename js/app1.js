@@ -16,13 +16,16 @@ let $mylist;
 let $play;
 let $replay;
 let startAnimation;
+let $footer;
+let $instructions;
+let $starwars;
 
 const speeds = [
-  30000,
+  20000,
+  40000,
   60000,
-  90000,
-  120000,
-  180000
+  80000,
+  100000
 ];
 let timeOutOne;
 let timeOutTwo;
@@ -40,6 +43,7 @@ let $gameover = null;
 
 function setup() {
   $timer = $('.timer');
+  $starwars = $('.starwars');
   $landingpad = $('.landing-pad');
   $scoreDisp = $('.scoreDisp');
   $main = $('main');
@@ -47,12 +51,16 @@ function setup() {
   $score = $('.score');
   $mylist = $('.mylist');
   gameContainerWidth = $('main').width();
+  $instructions = $('.insructions');
+  $footer = $('.footer');
+
 
 
   width = $main.width();
   $score.hide();
   $landingpad.hide();
   $mylist.hide();
+  $starwars.hide();
   // $starwars.hide();
 
   $gameover.hide();
@@ -63,17 +71,20 @@ function setup() {
   $replay = $('.replay');
   $play.on('click', startGame);
   $replay.on('click', restart);
+  $instructions.on('click', showInstructions);
 }
 
 function startGame() {
   // HERE
-  $('footer').hide();
+  $footer = $('footer');
+
+  $footer.hide();
   setTimeout(() => {
-    $('footer').remove();
+    $footer.remove();
   }, 500);
-  $('.mylist').show();
-  $('.landing-pad').show();
-  $('.score').show();
+  $mylist.show();
+  $landingpad.show();
+  $score.show();
   $('.banner').hide();
   $('.logo').hide();
   $(document).keydown(handleKeyDown);
@@ -97,7 +108,20 @@ function restart(){
   countdownInterval = setInterval(timer, 1000);
 }
 
-function timer() {
+function showInstructions(){
+
+  $footer.hide();
+  setTimeout(() => {
+    $('footer').remove();
+  }, 500);
+  $('.banner').hide();
+  $('.logo').hide();
+  $play.hide();
+  $starwars.show();
+
+}
+
+function timer(){
   count = count-1;
   if (count === 0){
     console.log('fired');
@@ -164,7 +188,7 @@ function animateBox($box) {
         checkForCollision($box, 2000);
 
         // Increase landing pad
-        changeWidthWide($landingpad, 1.2);
+        changeWidthWide($landingpad, 1.3);
         setTimeout(function (){
           changeWidthWide($landingpad,1 );
         }, 15000);
@@ -206,24 +230,19 @@ function setSpeeds() {
   timeOutFive = setTimeout(functionSame, speeds[4]);
 
   function functionSame() {
-    duration -= duration * 0.20;
+    duration -= duration * 0.25;
   }
-  // speeds.forEach(t => {
-  //   const newTimeout = setTimeout(function(){
-  //     duration -= duration * 0.20;
-  //   }, t);
-  // });
 }
 
 function handleKeyDown(e) {
   if(!pressed){
     switch (e.which) {
       case 37:
-      animatePaddle('-', checkForLeftEdge);
-      break;
+        animatePaddle('-', checkForLeftEdge);
+        break;
       case 39:
-      animatePaddle('+', checkForRightEdge);
-      break;
+        animatePaddle('+', checkForRightEdge);
+        break;
     }
   }
   pressed = true;
@@ -241,42 +260,42 @@ function animatePaddle(operation, callback) {
         }
       }
     });
-  }
+}
 
-  function checkForCollision($element, n){
-    $element.stop().fadeOut();
-    setTimeout(() => {
-      $element.remove();
-    }, 500);
-    score += n;
-    $scoreDisp.text(score);
-  }
+function checkForCollision($element, n){
+  $element.stop().fadeOut();
+  setTimeout(() => {
+    $element.remove();
+  }, 500);
+  score += n;
+  $scoreDisp.text(score);
+}
 
-  function handleKeyUp() {
-    $landingpad.stop();
+function handleKeyUp() {
+  $landingpad.stop();
 
-    pressed = false;
+  pressed = false;
 
-    if (checkForLeftEdge($landingpad)) $landingpad.css('left', '0').stop();
-    if (checkForRightEdge($landingpad)) $landingpad.css('left', `${width - $landingpad.width()}px`).stop();
-  }
+  if (checkForLeftEdge($landingpad)) $landingpad.css('left', '0').stop();
+  if (checkForRightEdge($landingpad)) $landingpad.css('left', `${width -   $landingpad.width()}px`).stop();
+}
 
-  function checkForLeftEdge($element) {
-    return parseInt($element.css('left')) < 0;
-  }
+function checkForLeftEdge($element) {
+  return parseInt($element.css('left')) < 0;
+}
 
-  function checkForRightEdge($element) {
-    return parseInt($element.css('left')) > gameContainerWidth - $element.width();
-  }
+function checkForRightEdge($element) {
+  return parseInt($element.css('left')) > gameContainerWidth - $element.width();
+}
 
-  function chooseRandomPosition($element) {
-    return Math.floor(Math.random() * ($element - 150)) + 1;
-  }
+function chooseRandomPosition($element) {
+  return Math.floor(Math.random() * ($element - 150)) + 1;
+}
 
-  function changeWidthWide($element, xChange) {
-    // const width = $element.width();
-    $element.animate({'width': (150 * xChange) + 'px'}, {
-      duration: '200',
-      easing: 'linear'
-    });
-  }
+function changeWidthWide($element, xChange) {
+  // const width = $element.width();
+  $element.animate({'width': (150 * xChange) + 'px'}, {
+    duration: '200',
+    easing: 'linear'
+  });
+}
