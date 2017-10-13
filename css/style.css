@@ -61,8 +61,8 @@ footer {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 180px;
-  height: 60px;
+  width: 210px;
+  height: 70px;
   z-index: 300;
   background-image: url('../assets/landspeeder.png');
   background-size: contain;
@@ -214,47 +214,6 @@ li {
   color: #ecdd62;
 }
 
-/*.instructions {
-  height: 100px;
-  width: 300px;
-  margin: auto;
-  top: 300px;
-  font-size: 40px;
-  font-family: 'Death Star', sans-serif;
-  float: right;
-  padding-left: 30px;
-  color: #ecdd62;
- }
-
-
-  .starwars {
-  /* Flexbox to center the entire element on the screen */
-  display: flex;
-  justify-content: center;
-  /* This is a magic number based on the context in which this snippet is used and effects the perspective */
-  height: 800px;
-  /* This sets allows us to transform the text on a 3D plane, and is somewhat a magic number */
-  perspective: 400px;
-  /* The rest is totally up to personal styling preferences */
-  color: #feda4a;
-  font-family: 'Pathway Gothic One', sans-serif;
-  font-size: 500%;
-  font-weight: 600;
-  letter-spacing: 6px;
-  line-height: 150%;
-  text-align: justify;
-}*/
-
-.crawl {
-  /* Position the element so we can adjust the top property in the animation */
-  position: relative;
-  /* Making sure the text is fully off the screen at the start and end of the animation */
-  top: -100px;
-  /* Defines the skew origin at the very center when we apply transforms on the animation */
-  transform-origin: 50% 100%;
-  animation: crawl 60s linear;
-}
-
  @-webkit-keyframes neon3 {
    from {
      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ecdd62, 0 0 35px #ecdd62, 0 0 40px #ecdd62, 0 0 50px #ecdd62, 0 0 75px #ecdd62;
@@ -283,18 +242,3 @@ li {
  100% {transform: translateY(2%);}
 
  }
-
- @keyframes crawl {
-  0% {
-    /* The element starts below the screen */
-    top: 0;
-    /* Rotate the text 20 degrees but keep it close to the viewer */
-    transform: rotateX(20deg) translateZ(0);
-  }
-  100% {
-    /* This is a magic number, but using a big one to make sure the text is fully off the screen at the end */
-    top: -6000px;
-    /* Slightly increasing the rotation at the end and moving the text far away from the viewer */
-    transform: rotateX(25deg) translateZ(-2500px);
-  }
-}

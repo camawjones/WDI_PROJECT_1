@@ -1,8 +1,5 @@
 $(setup);
 
-
-
-const baseBoxWidth = 50;
 let duration = 3000;
 // const $main = $('main');
 let score = 0;
@@ -19,6 +16,8 @@ let startAnimation;
 let $footer;
 let $instructions;
 let $starwars;
+let $banner;
+let $logo;
 
 const speeds = [
   20000,
@@ -77,6 +76,8 @@ function setup() {
 function startGame() {
   // HERE
   $footer = $('footer');
+  $banner = $('.banner');
+  $logo = $('.logo');
 
   $footer.hide();
   setTimeout(() => {
@@ -85,8 +86,8 @@ function startGame() {
   $mylist.show();
   $landingpad.show();
   $score.show();
-  $('.banner').hide();
-  $('.logo').hide();
+  $banner.hide();
+  $logo.hide();
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
@@ -102,7 +103,7 @@ function restart(){
   score = 0;
   duration = 3000;
   for (var i = 0; i < 3; i++) {
-    $('.mylist').append('<li class="lives"></li>');
+    $mylist.append('<li class="lives"></li>');
   }
   $('.box').remove();
   countdownInterval = setInterval(timer, 1000);
@@ -112,7 +113,7 @@ function showInstructions(){
 
   $footer.hide();
   setTimeout(() => {
-    $('footer').remove();
+    $footer.remove();
   }, 500);
   $('.banner').hide();
   $('.logo').hide();
@@ -192,9 +193,7 @@ function animateBox($box) {
         setTimeout(function (){
           changeWidthWide($landingpad,1 );
         }, 15000);
-
-      }
-      else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
+      } else if($box.hasClass('martins') && x1.top - a1 > x2.top && !boxDimensions){
 
         // Taking a life
       }
@@ -294,7 +293,7 @@ function chooseRandomPosition($element) {
 
 function changeWidthWide($element, xChange) {
   // const width = $element.width();
-  $element.animate({'width': (150 * xChange) + 'px'}, {
+  $element.animate({'width': (210 * xChange) + 'px'}, {
     duration: '200',
     easing: 'linear'
   });
