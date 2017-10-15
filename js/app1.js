@@ -50,7 +50,7 @@ function setup() {
   $score = $('.score');
   $mylist = $('.mylist');
   gameContainerWidth = $('main').width();
-  $instructions = $('.insructions');
+  $instructions = $('.instructions');
   $footer = $('.footer');
 
 
@@ -78,7 +78,9 @@ function startGame() {
   $footer = $('footer');
   $banner = $('.banner');
   $logo = $('.logo');
+  $starwars = $('.starwars');
 
+  $starwars.hide();
   $footer.hide();
   setTimeout(() => {
     $footer.remove();
@@ -91,12 +93,14 @@ function startGame() {
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
+
   // setSpeeds();
 }
 
 function restart(){
   // $(document).keydown(handleKeyDown);
   // $(document).keyup(handleKeyUp);
+  $starwars.hide();
   $gameover.hide();
   $scoreDisp.text('');
   count = 4;
@@ -110,17 +114,35 @@ function restart(){
 }
 
 function showInstructions(){
+  $footer = $('footer');
+  $banner = $('.banner');
+  $logo = $('.logo');
+  // $play = $('.play');
+  // $starwars = $('.starwars');
 
+    // $footer.hide();
+    // setTimeout(() => {
+    //   $footer.remove();
+    // }, 500);
+  $banner.hide();
+  // $logo.hide();
+  // $play.hide();
+  $logo.hide();
+  $starwars.show();
   $footer.hide();
   setTimeout(() => {
-    $footer.remove();
-  }, 500);
-  $('.banner').hide();
-  $('.logo').hide();
-  $play.hide();
-  $starwars.show();
+    $starwars.hide();
+    $logo.show();
+    $play.show();
+    $banner.show();
+    $footer.show();
+  }, 20000);
+
+
+
 
 }
+
 
 function timer(){
   count = count-1;
