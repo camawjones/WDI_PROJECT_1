@@ -1,7 +1,6 @@
 $(setup);
 
 let duration = 3000;
-// const $main = $('main');
 let score = 0;
 const interval = 1000;
 let count = 4;
@@ -18,6 +17,10 @@ let $instructions;
 let $starwars;
 let $banner;
 let $logo;
+let $audio;
+let $volumeOff;
+let $volumeOn;
+let my_mute;
 
 const speeds = [
   20000,
@@ -49,26 +52,24 @@ function setup() {
   $gameover = $('.gameover');
   $score = $('.score');
   $mylist = $('.mylist');
-  gameContainerWidth = $('main').width();
   $instructions = $('.instructions');
   $footer = $('.footer');
-
-
-
-  width = $main.width();
+  $audio = $('audio');
+  $play = $('.play');
+  $volumeOff = $('.fa-volume-off');
+  $volumeOn = $('.fa-volume-up');
+  $replay = $('.replay');
   $score.hide();
   $landingpad.hide();
   $mylist.hide();
   $starwars.hide();
-  // $starwars.hide();
-
   $gameover.hide();
-
-
-  // setSpeeds();
-  $play = $('.play');
-  $replay = $('.replay');
+  $audio[0].play();
+  width = $main.width();
+  gameContainerWidth = $('main').width();
   $play.on('click', startGame);
+  $volumeOff.on('click', audioPlay);
+  $volumeOn.on('click', audioPlay);
   $replay.on('click', restart);
   $instructions.on('click', showInstructions);
 }
@@ -79,7 +80,6 @@ function startGame() {
   $banner = $('.banner');
   $logo = $('.logo');
   $starwars = $('.starwars');
-
   $starwars.hide();
   $footer.hide();
   setTimeout(() => {
@@ -93,13 +93,9 @@ function startGame() {
   $(document).keydown(handleKeyDown);
   $(document).keyup(handleKeyUp);
   countdownInterval = setInterval(timer, 1000);
-
-  // setSpeeds();
 }
 
 function restart(){
-  // $(document).keydown(handleKeyDown);
-  // $(document).keyup(handleKeyUp);
   $starwars.hide();
   $gameover.hide();
   $scoreDisp.text('');
@@ -117,16 +113,7 @@ function showInstructions(){
   $footer = $('footer');
   $banner = $('.banner');
   $logo = $('.logo');
-  // $play = $('.play');
-  // $starwars = $('.starwars');
-
-    // $footer.hide();
-    // setTimeout(() => {
-    //   $footer.remove();
-    // }, 500);
   $banner.hide();
-  // $logo.hide();
-  // $play.hide();
   $logo.hide();
   $starwars.show();
   $footer.hide();
@@ -138,10 +125,27 @@ function showInstructions(){
     $footer.show();
   }, 20000);
 
-
-
-
 }
+
+// function audioMute() {
+//   $audio.muted = true;
+//   $volumeOn.show();
+//   $volumeOff.hide();
+// }
+
+function audioPlay() {
+  if ($audio[0].paused === false) {
+    $audio[0].pause();
+    $volumeOff.show();
+    $volumeOn.hide();
+  } else {
+    $audio[0].play();
+    $volumeOff.hide();
+    $volumeOn.show();
+  }
+}
+
+
 
 
 function timer(){

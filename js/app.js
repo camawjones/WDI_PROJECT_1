@@ -86,11 +86,12 @@ $(() => {
   speedUp(90000);
   speedUp(120000);
 
-$()
+  $();
   function createBox() {
     const $box = $('<div class="box"></div>');
     $box.css('left', chooseRandomPosition($main));
-    if (Math.random() > 0.96) {$box.addClass('life');
+    if (Math.random() > 0.96) {
+      $box.addClass('life');
     } else if (Math.random() <= 0.96 && Math.random() >= 0.92) {
       $box.addClass('widthwide');
     } else {
