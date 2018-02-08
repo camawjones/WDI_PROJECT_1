@@ -1,4 +1,14 @@
 
+@font-face {
+  font-family: 'Death Star';
+  src: url(./fonts/Death-Star.otf);
+}
+
+@font-face {
+  font-family: 'star jedi hollow';
+  src: url(./fonts/Starjhol.ttf);
+}
+
 body {
 background-image: url('../assets/star-background.jpg');
 background-size: cover;

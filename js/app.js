@@ -182,18 +182,3 @@ function changeWidthWide($element, pxChange) {
     easing: 'linear'
   });
 }
-
-// function newLevel(){
-//   $('.level').hide();
-//   setTimeout(function(){
-//
-//   })
-
-
-
-
-// function () {
-//   if (parseInt($landingpad.css('left')) < 0 ) {
-//     $(document).trigger('keyup');
-//   }
-// }

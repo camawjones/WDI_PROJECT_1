@@ -20,7 +20,7 @@ let $logo;
 let $audio;
 let $volumeOff;
 let $volumeOn;
-let my_mute;
+
 
 const speeds = [
   20000,
@@ -127,12 +127,6 @@ function showInstructions(){
 
 }
 
-// function audioMute() {
-//   $audio.muted = true;
-//   $volumeOn.show();
-//   $volumeOff.hide();
-// }
-
 function audioPlay() {
   if ($audio[0].paused === false) {
     $audio[0].pause();
@@ -144,9 +138,6 @@ function audioPlay() {
     $volumeOn.show();
   }
 }
-
-
-
 
 function timer(){
   count = count-1;
